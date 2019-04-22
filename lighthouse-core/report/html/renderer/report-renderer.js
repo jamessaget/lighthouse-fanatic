@@ -223,20 +223,23 @@ class ReportRenderer {
     // }
 
     if (scoreHeader) {
-      const defaultGauges = [];
-      const customGauges = [];
+      // Group gauges in this order: mainstream, pwa, plugins.
+      const mainstreamGauges = [];
+      const customGauges = []; // PWA.
+      const pluginGauges = [];
       for (const category of report.reportCategories) {
         const renderer = specificCategoryRenderers[category.id] || categoryRenderer;
         const categoryGauge = renderer.renderScoreGauge(category, report.categoryGroups || {});
 
-        // Group gauges that aren't default at the end of the header
-        if (renderer.renderScoreGauge === categoryRenderer.renderScoreGauge) {
-          defaultGauges.push(categoryGauge);
+        if (Util.isPluginCategory(category.id)) {
+          pluginGauges.push(categoryGauge);
+        } else if (renderer.renderScoreGauge === categoryRenderer.renderScoreGauge) {
+          mainstreamGauges.push(categoryGauge);
         } else {
           customGauges.push(categoryGauge);
         }
       }
-      scoreHeader.append(...defaultGauges, ...customGauges);
+      scoreHeader.append(...mainstreamGauges, ...customGauges, ...pluginGauges);
 
       const scoreScale = this._dom.cloneTemplate('#tmpl-lh-scorescale', this._templateContext);
       const scoresContainer = this._dom.find('.lh-scores-container', headerContainer);
