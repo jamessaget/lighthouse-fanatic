@@ -94,7 +94,7 @@ async function begin() {
     cliFlags.outputPath = 'stdout';
   }
 
-  // show deprecation message for disableDeviceEmulation
+  // @ts-ignore - deprecation message for removed disableDeviceEmulation; can remove warning in v6.
   if (cliFlags.disableDeviceEmulation) {
     log.warn('config', 'The "--disable-device-emulation" has been removed in v5.' +
         ' Please use "--emulated-form-factor=none" instead.');
