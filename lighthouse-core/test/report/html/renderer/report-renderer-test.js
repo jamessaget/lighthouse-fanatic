@@ -125,10 +125,11 @@ describe('ReportRenderer', () => {
         return el.matches('.lh-gauge__wrapper--plugin');
       });
 
-      assert.notEqual(-1, indexOfPwaGauge);
-      assert.notEqual(-1, indexOfPluginGauge);
-
       const scoresHeaderElem = output.querySelector('.lh-scores-header');
+      assert.equal(scoresHeaderElem.children.length - 2, indexOfPwaGauge);
+      assert.equal(scoresHeaderElem.children.length - 1, indexOfPluginGauge);
+      assert(indexOfPluginGauge > indexOfPwaGauge);
+
       for (let i = 0; i < scoresHeaderElem.children.length; i++) {
         const gauge = scoresHeaderElem.children[i];
 
